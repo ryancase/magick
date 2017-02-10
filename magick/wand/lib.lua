@@ -50,6 +50,9 @@ ffi.cdef([[  typedef void MagickWand;
   MagickBooleanType MagickScaleImage(MagickWand *wand,
     const size_t columns,const size_t rows);
 
+  MagickBooleanType MagickBorderImage(MagickWand *wand,
+    const PixelWand *background,const size_t width,const size_t height,const CompositeOperator compose);
+
   MagickBooleanType MagickRotateImage(MagickWand *wand,
   const PixelWand *background,const double degrees);
 

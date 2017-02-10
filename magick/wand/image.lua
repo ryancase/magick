@@ -106,6 +106,26 @@ do
       w, h = self:_keep_aspect(w, h)
       return handle_result(self, lib.MagickScaleImage(self.wand, w, h))
     end,
+    border = function(self, w, h, r, g, b, op)
+      if r == nil then
+        r = 0
+      end
+      if g == nil then
+        g = 0
+      end
+      if b == nil then
+        b = 0
+      end
+      if op == nil then
+        op = "OverCompositeOp"
+      end
+      local pixel = ffi.gc(lib.NewPixelWand(), lib.DestroyPixelWand)
+      lib.PixelSetRed(pixel, r)
+      lib.PixelSetGreen(pixel, g)
+      lib.PixelSetBlue(pixel, b)
+      op = assert(composite_operators:to_int(op), "invalid operator type")
+      return handle_result(self, lib.MagickBorderImage(self.wand, pixel, w, h, op))
+    end,
     crop = function(self, w, h, x, y)
       if x == nil then
         x = 0

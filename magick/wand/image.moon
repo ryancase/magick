@@ -97,6 +97,17 @@ class Image extends require "magick.base_image"
     handle_result @,
       lib.MagickScaleImage @wand, w, h
 
+  border: (w,h, r=0, g=0, b=0, op="OverCompositeOp") =>
+    pixel = ffi.gc lib.NewPixelWand!, lib.DestroyPixelWand
+
+    lib.PixelSetRed pixel, r
+    lib.PixelSetGreen pixel, g
+    lib.PixelSetBlue pixel, b
+
+    op = assert composite_operators\to_int(op), "invalid operator type"
+    handle_result @,
+      lib.MagickBorderImage @wand, pixel, w, h, op
+
   crop: (w,h, x=0, y=0) =>
     handle_result @,
       lib.MagickCropImage @wand, w, h, x, y
